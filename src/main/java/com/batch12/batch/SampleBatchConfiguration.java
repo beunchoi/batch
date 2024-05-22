@@ -23,18 +23,18 @@ public class SampleBatchConfiguration {
   private final TestTasklet testTasklet;
 
   @Bean
-  public Job userGradeJob(JobRepository jobRepository,
+  public Job sampleBatch(JobRepository jobRepository,
       PlatformTransactionManager transactionManager, DataSource dataSource) {
     return new JobBuilder("sampleBatch", jobRepository)
-        .start(initializeUserStep(null, jobRepository, transactionManager))
+        .start(Step(null, jobRepository, transactionManager))
         .build();
   }
 
   @Bean
   @JobScope
-  public Step initializeUserStep(@Value("#{jobParameters[date]}") String date,
+  public Step Step(@Value("#{jobParameters[date]}") String date,
       JobRepository jobRepository, PlatformTransactionManager transactionManager) {
-    return new StepBuilder("initializeUserStep", jobRepository)
+    return new StepBuilder("sampleStep", jobRepository)
         .tasklet(testTasklet, transactionManager)
         .build();
   }
